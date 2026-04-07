@@ -61,3 +61,34 @@ void viewAvailableCourses();
 void registerCourse(int studentIndex, int courseID);
 void dropCourse(int studentIndex, int courseID);
 void viewStudentSchedule(int studentIndex);
+
+// --- Function Prototypes (TEEEEEEEEEEEEEEST) ---
+
+void showMainMenu();       // القائمة الرئيسية (Login/Exit)
+void showAdminMenu();      // قائمة الأدمن (إدارة الكورسات)
+void showStudentMenu();    // قائمة الطالب (تسجيل الكورسات)
+
+// --- Global Data ---
+Student students[100];
+Course courses[50];
+int totalStudents = 0;
+int totalCourses = 0;
+
+// --- Main Control ---
+int main() {
+    // سيتم استدعاء فانكشن الـ Load من الملفات هنا (تيم A و B)
+    
+    showMainMenu();
+    
+    return 0;
+}
+
+// --- تنفيذ الـ Menu (شغل الليدر) ---
+void showMainMenu() {
+    cout << "====================================" << endl;
+    cout << "   WELCOME TO ASU COURSE SYSTEM     " << endl;
+    cout << "====================================" << endl;
+    cout << "1. Login" << endl;
+    cout << "2. Exit" << endl;
+    cout << "Choice: ";
+}
