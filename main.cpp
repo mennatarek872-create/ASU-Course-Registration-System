@@ -42,24 +42,50 @@ int adminCount = 1;
 
 // Function Prototypes (13 Functions)
 
+void studentLogin() {
+   
+}
 
-// Authentication
-void signUp();
-int studentLogin();
-bool adminLogin();
-bool isStudentIDExist(int id);
+void studentSignUp() {
 
-// Course Management
-void addCourse();
-void viewAllCourses();
-int searchCourse(int courseID);
-void increaseStudentCount(int courseID);
-void decreaseStudentCount(int courseID);
+}
 
-// Student Logic
-void viewAvailableCourses();
-void registerCourse(int studentIndex, int courseID);
-void dropCourse(int studentIndex, int courseID);
-void viewStudentSchedule(int studentIndex);
+void viewAvailableCourses() {
 
+}
+
+void registerCourse() {
+
+}
+
+void dropCourse() {
+
+}
+
+void viewMyCourses() {
+}
+
+void studentLogout() {
+
+}
+void adminLogin() {
+
+}
+
+void addCourse() {
+}
+
+void editCourse() {
+
+}
+
+void deleteCourse() {
+}
+
+void viewAllStudents() {
+
+}
+
+void adminLogout() {
+}
 
