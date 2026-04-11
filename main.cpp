@@ -3,29 +3,29 @@
 using namespace std;
 // Structs (ممنوع تعديلها)
 struct Student {
-    int StudentID;
-    string Name;
-    string Password;
-    int Level;
-    int RegisteredCourses[10];
-    int NumberOfRegisteredCourses = 0;
+	int StudentID;
+	string Name;
+	string Password;
+	int Level;
+	int RegisteredCourses[10];
+	int NumberOfRegisteredCourses = 0;
 };
 
 struct Course {
-    int CourseID;
-    string CourseName;
-    string InstructorName;
-    int CreditHours;
-    int MaxCapacity;
-    int CurrentEnrolled = 0;
-    string Day;
-    string Time;
+	int CourseID;
+	string CourseName;
+	string InstructorName;
+	int CreditHours;
+	int MaxCapacity;
+	int CurrentEnrolled = 0;
+	string Day;
+	string Time;
 };
 
 struct Admin {
-    int AdminID;
-    string Name;
-    string Password;
+	int AdminID;
+	string Name;
+	string Password;
 };
 
 
@@ -42,50 +42,31 @@ int adminCount = 1;
 
 // Function Prototypes (13 Functions)
 
-void studentLogin() {
-   
-}
 
-void studentSignUp() {
+// Function Prototypes (13 Functions)
 
-}
+// team a
+void studentLogin();
+void studentSignUp();
+void adminLogin();
+bool isStudentIDExist(int id);
+void studentLogout();// extra task
+void adminLogout(); // extra task
 
-void viewAvailableCourses() {
-
-}
-
-void registerCourse() {
-
-}
-
-void dropCourse() {
-
-}
-
-void viewMyCourses() {
-}
-
-void studentLogout() {
-
-}
-void adminLogin() {
-
-}
-
-void addCourse() {
-}
-
-void editCourse() {
-
-}
-
-void deleteCourse() {
-}
-
-void viewAllStudents() {
-
-}
-
-void adminLogout() {
-}
-
+//-----------------------------------------------------------------------
+// team b
+void addCourse() ;
+void viewAllStudents() ;
+void increaseStudentCount(int courseID);
+void decreaseStudentCount(int courseID);
+void viewAllCourses();
+int searchCourse(int courseID);
+void editCourse();
+void deleteCourse() ;
+//-----------------------------------------------------------------------
+//team c
+void viewAvailableCourses();
+void registerCourse();
+void dropCourse() ;
+void viewMyCourses();
+//-----------------------------------------------------------------------
