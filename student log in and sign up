@@ -14,6 +14,13 @@ struct Student {
 	int NumberOfRegisteredCourses;
 
 };
+struct admin {
+	int adminid;
+	string adminname;
+	char adminpassword[20];
+};
+admin admins[3] = {
+{9080371,"mohamed","mo678"},{3701246,"rana","rana234"},{7098132,"ali","ali3412"} };
 int studentcount =1;
 Student students[50];
 void mainmenu();
@@ -21,7 +28,7 @@ void Studentmenu();
 bool isStudentIDExist(int);
 void Signup();
 int studentlogin();
-void Adminlogin();
+int Adminlogin();
 void savetofile(int,string,char[], int);
 
 
@@ -189,6 +196,27 @@ int studentlogin() {
 	}
 	return -1;
 }
-void Adminlogin() {
+int Adminlogin() {
+	int id;
+	char pass[25];
+
+	cout << "please enter your id:"; cin >> id;
+	int i = 0;
+	cout << "please enter your password:";
+	pass[i] = _getch();
+	while (pass[i] != '\r')
+	{
+		cout << '*'; i++;
+		pass[i] = _getch();
+	}
+	pass[i] = '\0';
+	for (int j = 0; j < 50; j++)
+	{
+		if (students[j].StudentID == id && students[j].Password == (string)pass)
+		{
+			return i;
+		}
+	}
+	return -1;
 
 }
