@@ -1,0 +1,194 @@
+#include<iostream>
+#include<string>
+#include<cstring>
+#include<conio.h>
+#include<fstream>
+using namespace std;
+
+struct Student {
+	int StudentID;
+	string Name;
+	char Password[25];
+	int Level;
+	int RegisteredCourses[10];
+	int NumberOfRegisteredCourses;
+
+};
+int studentcount =1;
+Student students[50];
+void mainmenu();
+void Studentmenu();
+bool isStudentIDExist(int);
+void Signup();
+int studentlogin();
+void Adminlogin();
+void savetofile(int,string,char[], int);
+
+
+
+int main() {
+	students[0].StudentID = 20251700;
+	students[0].Level = 1;
+	strcpy_s(students[0].Password, "1234");
+	students[0].Name = "Selim";
+
+	// لو شيلتي دول خلي ال student count =0
+
+	mainmenu();
+}
+
+
+void mainmenu() {
+
+	int choice;
+	cout << "welcome to our system" << endl;
+	cout << "for Student press 1" << endl;
+	cout << "for Admin press 2" << endl;
+	cin >> choice;
+	switch (choice) {
+	case 1:
+		Studentmenu();
+		break;
+	case 2:
+		Adminlogin();
+		break;
+	default:
+		cout << "Invalid Choice" << endl;
+		mainmenu();
+	}
+
+
+}
+
+
+void Studentmenu() {
+	int choice;
+	int index;
+	cout << "press 1 to sign up" << endl;
+	cout << "press 2 to log in" << endl;
+	cin >> choice;
+	switch (choice) {
+	case 1:
+		Signup();
+		break;
+	case 2:
+		index = studentlogin();
+		break;
+	default:
+		cout << "Invalid Choice" << endl;
+		Studentmenu();
+	}
+}
+
+bool isStudentIDExist(int ID) {
+
+	for (int i = 0;i < 50;i++) {
+		if (students[i].StudentID == ID) {
+			return true;
+			break;
+		}
+
+	}
+	return false;
+
+}
+
+
+void Signup() {
+	bool IDExist;
+	int ID;
+	int i = 0;
+	char pass[25];
+	bool signup = false;
+	cout << "enter your ID: ";
+	cin >> ID;
+
+	IDExist = isStudentIDExist(ID);
+	if (!IDExist) {
+		if (studentcount != 50) {
+
+
+			students[studentcount].StudentID = ID;
+			cin.ignore();
+			cout << "enter your name :";
+			getline(cin, students[studentcount].Name);
+
+			cout << "enter your password :";
+
+			pass[i] = _getch();
+			while (pass[i] != '\r') {
+				
+					i++;
+					cout << '*';
+					pass[i] = _getch();
+				
+			}
+			pass[i] = '\0';
+			strcpy_s(students[studentcount].Password, pass);
+			cout << endl;
+
+			cout << "enter your level :";
+			cin >> students[studentcount].Level;
+
+			cout << "Registration completed successfully " << endl;
+			signup = true;
+			
+			savetofile(students[studentcount].StudentID,students[studentcount].Name, students[studentcount].Password,students[studentcount].Level);
+			studentcount = studentcount + 1;
+		}
+		else {
+			cout << "No Further Registration are being accepted at this time  " << endl;;
+		}
+
+
+	}
+	else {
+		cout << "this id is already exist" << endl;
+	}
+
+
+
+	
+
+
+}
+void savetofile(int id, string name, char pass[25], int level) {
+	ofstream file("students.txt", ios::app);
+	if (file.is_open()) {
+		file << id << " " << name << " " << pass << " " << level << endl;
+		file.close();
+		cout << "saved to file";
+	}
+	else {
+		cout << "not save to file";
+	}
+
+}
+;
+
+int studentlogin() {
+	int id;
+	char pass[25];
+
+	cout << "please enter your id:"; cin >> id;
+	int i = 0;
+	cout << "please enter your password:";
+	pass[i] = _getch();
+	while (pass[i] != '\r')
+	{
+		cout << '*'; i++;
+		pass[i] = _getch();
+	}
+	pass[i] = '\0';
+	for (int j = 0; j < 50; j++)
+	{
+		if (students[j].StudentID == id && students[j].Password == (string)pass)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+void Adminlogin() {
+
+}
