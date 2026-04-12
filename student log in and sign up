@@ -89,7 +89,7 @@ bool isStudentIDExist(int iD) {
 	for (int i = 0;i < 50;i++) {
 		if (students[i].StudentID == iD) {
 			return true;
-			break;
+		
 		}
 
 	}
@@ -122,8 +122,8 @@ void SignUp() {
 			pass[i] = _getch();
 			while (pass[i] != '\r') {
 				
-					i++;
 					cout << '*';
+                     i++;
 					pass[i] = _getch();
 				
 			}
@@ -174,13 +174,15 @@ int studentLogin() {
 	int id;
 	char pass[25];
 
-	cout << "please enter your id:"; cin >> id;
+	cout << "please enter your id:";
+    cin >> id;
 	int i = 0;
 	cout << "please enter your password:";
 	pass[i] = _getch();
 	while (pass[i] != '\r')
 	{
-		cout << '*'; i++;
+		cout << '*';
+        i++;
 		pass[i] = _getch();
 	}
 	pass[i] = '\0';
