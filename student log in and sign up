@@ -11,27 +11,25 @@ struct Student {
 	char Password[25];
 	int Level;
 	int RegisteredCourses[10];
-	int NumberOfRegisteredCourses;
+	int NumberOfRegisteredCourses=0;
 
 };
-struct admin {
-	int adminid;
-	string adminname;
+struct Admin {
+	int AdminId;
+	string Name;
 	char adminpassword[20];
 };
-admin admins[3] = {
+Admin admins[3] = {
 {9080371,"mohamed","mo678"},{3701246,"rana","rana234"},{7098132,"ali","ali3412"} };
 int studentcount =1;
 Student students[50];
 void mainmenu();
 void Studentmenu();
 bool isStudentIDExist(int);
-void Signup();
-int studentlogin();
-int Adminlogin();
+void SignUp();
+int studentLogin();
+int adminLogin();
 void savetofile(int,string,char[], int);
-
-
 
 int main() {
 	students[0].StudentID = 20251700;
@@ -39,7 +37,6 @@ int main() {
 	strcpy_s(students[0].Password, "1234");
 	students[0].Name = "Selim";
 
-	// لو شيلتي دول خلي ال student count =0
 
 	mainmenu();
 }
@@ -57,7 +54,7 @@ void mainmenu() {
 		Studentmenu();
 		break;
 	case 2:
-		Adminlogin();
+		adminLogin();
 		break;
 	default:
 		cout << "Invalid Choice" << endl;
@@ -76,10 +73,10 @@ void Studentmenu() {
 	cin >> choice;
 	switch (choice) {
 	case 1:
-		Signup();
+		SignUp();
 		break;
 	case 2:
-		index = studentlogin();
+		index = studentLogin();
 		break;
 	default:
 		cout << "Invalid Choice" << endl;
@@ -87,10 +84,10 @@ void Studentmenu() {
 	}
 }
 
-bool isStudentIDExist(int ID) {
+bool isStudentIDExist(int iD) {
 
 	for (int i = 0;i < 50;i++) {
-		if (students[i].StudentID == ID) {
+		if (students[i].StudentID == iD) {
 			return true;
 			break;
 		}
@@ -101,7 +98,7 @@ bool isStudentIDExist(int ID) {
 }
 
 
-void Signup() {
+void SignUp() {
 	bool IDExist;
 	int ID;
 	int i = 0;
@@ -173,7 +170,7 @@ void savetofile(int id, string name, char pass[25], int level) {
 }
 ;
 
-int studentlogin() {
+int studentLogin() {
 	int id;
 	char pass[25];
 
@@ -191,32 +188,38 @@ int studentlogin() {
 	{
 		if (students[j].StudentID == id && students[j].Password == (string)pass)
 		{
-			return i;
+			return j;
 		}
 	}
 	return -1;
 }
-int Adminlogin() {
-	int id;
-	char pass[25];
-
-	cout << "please enter your id:"; cin >> id;
-	int i = 0;
-	cout << "please enter your password:";
-	pass[i] = _getch();
-	while (pass[i] != '\r')
-	{
-		cout << '*'; i++;
-		pass[i] = _getch();
-	}
-	pass[i] = '\0';
-	for (int j = 0; j < 50; j++)
-	{
-		if (students[j].StudentID == id && students[j].Password == (string)pass)
-		{
-			return i;
-		}
-	}
-	return -1;
+int adminLogin() {
+	    int adid;
+    string name;
+    char adpass[20];
+    cout << "Enter your name:";
+    cin >> name;
+    cout << endl;
+    cout << "Enter ID:";
+    cin >> adid;
+    cout << endl;
+    cout << "Enter your password:";
+    int i = 0;
+    adpass[i] = _getch();
+    while (adpass[i] != '\r') {
+        cout << '*';
+        i++;
+        adpass[i] = _getch();
+    }
+    adpass[i] = '\0';
+    cout << endl;
+    for (int j = 0; j < 3; j++) {
+        if (admins[j].Name == name && admins[j].AdminId == adid && admins[j].adminpassword == (string)adpass)
+        {
+            return true;
+        }
+    }
+   
+    return false;
 
 }
