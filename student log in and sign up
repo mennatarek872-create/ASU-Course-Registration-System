@@ -29,7 +29,8 @@ bool isStudentIDExist(int);
 void SignUp();
 int studentLogin();
 int adminLogin();
-void savetofile(int,string,char[], int);
+void saveAllStudentsToFile();
+void loadStudentsFromFile();
 
 int main() {
 	students[0].StudentID = 20251700;
@@ -136,8 +137,7 @@ void SignUp() {
 
 			cout << "Registration completed successfully " << endl;
 			signup = true;
-			
-			savetofile(students[studentcount].StudentID,students[studentcount].Name, students[studentcount].Password,students[studentcount].Level);
+			saveAllStudentsToFile();
 			studentcount = studentcount + 1;
 		}
 		else {
@@ -156,19 +156,27 @@ void SignUp() {
 
 
 }
-void savetofile(int id, string name, char pass[25], int level) {
-	ofstream file("students.txt", ios::app);
-	if (file.is_open()) {
-		file << id << " " << name << " " << pass << " " << level << endl;
-		file.close();
-		cout << "saved to file";
+void saveAllStudentsToFile() {
+	ofstream outFile("students.txt");
+	if (outFile.is_open()) {
+		for (int i = 0;i < studentcount;i++) {
+			outFile << students[i].StudentID << " " << students[i].Name << " " << students[i].Password << " " << students[i].Level << endl;
+		}
+		outFile.close();
 	}
-	else {
-		cout << "not save to file";
-	}
-
 }
-;
+
+void loadStudentsFromFile() {
+	ifstream inFile("stidents.txt");
+	if (inFile.is_open()) {
+		int i = 0;
+		while (inFile >> students[i].StudentID >> students[i].Name >> students[i].Password >> students[i].Level) {
+			i++;
+		}
+		studentcount = i;
+		inFile.close();
+	}
+}
 
 int studentLogin() {
 	int id;
