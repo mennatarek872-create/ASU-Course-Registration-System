@@ -167,7 +167,7 @@ void saveAllStudentsToFile() {
 }
 
 void loadStudentsFromFile() {
-	ifstream inFile("stidents.txt");
+	ifstream inFile("students.txt");
 	if (inFile.is_open()) {
 		int i = 0;
 		while (inFile >> students[i].StudentID >> students[i].Name >> students[i].Password >> students[i].Level) {
