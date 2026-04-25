@@ -1,0 +1,514 @@
+#include<iostream>
+#include<string>
+#include<cstring>
+#include<conio.h>
+#include<fstream>
+#include <iomanip>
+using namespace std;
+struct Student {
+	int StudentID;
+	string Name;
+	char Password[25];
+	int Level;
+	int RegisteredCourses[10];
+	int NumberOfRegisteredCourses=0;
+
+};
+struct Course {
+	int CourseID;
+	string CourseName;
+	string InstructorName;
+	int CreditHours;
+	int MaxCapacity;
+	int CurrentEnrolled = 0;
+	string Day;
+	string Time;
+};
+struct Admin {
+	int AdminId;
+	string Name;
+	char AdminPassword[20];
+};
+Admin admins[3] = {
+{9080371,"Mohammed","mo678"},{3701246,"Rana","rana234"},{7098132,"Ali","ali3412"} };
+int studentcount =1;
+Student students[50];
+Course courses[20];
+int courseCount = 0;
+
+void mainmenu();
+void Studentmenu();
+bool isStudentIDExist(int);
+void studentSignUp();
+int studentLogin();
+void saveAllStudentsToFile();
+void loadStudentsFromFile();
+int adminLogin();
+// Team B
+void loadCourses();
+void saveCourses();
+bool addCourse();
+void editCourse();
+void deleteCourse();
+int searchCourse(int courseID);
+void viewAllStudents();
+void viewAllCourses();
+void increaseStudentCount(int courseID);
+void decreaseStudentCount(int courseID);
+void adminDashboard();
+// Team C
+void viewAvailableCourses();
+void registerCourse();
+void dropCourse();
+void viewMyCourses();
+
+int main() {
+	students[0].StudentID = 20251700;
+	students[0].Level = 1;
+	strcpy_s(students[0].Password, "1234");
+	students[0].Name = "Selim";
+
+	courses[0].CourseID = 20251700;
+	courses[0].CourseName = "English";
+	courses[0].InstructorName = "Mohammed";
+	courses[0].CreditHours = 3;
+	courses[0].MaxCapacity = 25;
+	courses[0].CurrentEnrolled = 5;
+	courses[0].Day = "Sunday";
+	courses[0].Time = "8 AM";
+	courseCount=2;
+
+	mainmenu();
+
+}
+void mainmenu() {
+	loadStudentsFromFile();
+	loadCourses();
+	int choice;
+	do {
+		cout << "\nwelcome to our system" << endl;
+		cout << "for Student press 1" << endl;
+		cout << "for Admin press 2" << endl;
+		cout << "press 0 to exit" << endl;
+		cin >> choice;
+		switch (choice) {
+		case 1:
+			Studentmenu();
+			break;
+		case 2:
+			adminLogin();
+
+			break;
+		case 0:
+			cout << "Goodbye!" << endl;
+			break;
+		default:
+			cout << "Invalid Choice" << endl;
+		}
+	} while (choice != 0);
+}
+void Studentmenu() {
+	int choice;
+	int index;
+	cout << "press 1 to sign up" << endl;
+	cout << "press 2 to log in" << endl;
+	cin >> choice;
+	switch (choice) {
+	case 1:
+			studentSignUp();
+		break;
+	case 2:
+			index = studentLogin();
+			 if (index != -1) {
+			 	cout << "Login successful\n";
+			// 	// هنا تدخل على student dashboard
+			 } else {
+			 	cout << "Invalid login\n";
+			 }
+		break;
+	default:
+		cout << "Invalid Choice" << endl;
+		Studentmenu();
+	}
+}
+bool isStudentIDExist(int iD) {
+	for (int i = 0;i < studentcount;i++) {
+		if (students[i].StudentID == iD) {
+			return true;
+		}
+	}
+	return false;
+}
+void studentSignUp() {
+	bool IDExist;
+	int ID;
+	char pass[25];
+	bool signup = false;
+	cout << "enter your ID: "; cin >> ID;
+	IDExist = isStudentIDExist(ID);
+	if (!IDExist) {
+		if (studentcount != 50) {
+			students[studentcount].StudentID = ID;
+			cin.ignore();
+			cout << "enter your name :";
+			getline(cin, students[studentcount].Name);
+			cout << "enter your password :";
+
+	        int i = 0;
+			char ch;
+			while (true) {
+				ch = _getch();
+
+				if (ch == '\r') break;
+
+				if (i < 24) {
+					pass[i++] = ch;
+					cout <<'*';
+				}
+			}
+			pass[i] = '\0';
+
+
+			strcpy_s(students[studentcount].Password, pass);
+			cout << endl;
+
+			cout << "enter your level: ";
+			cin >> students[studentcount].Level;
+			cout << "Registration completed successfully " << endl;
+			saveAllStudentsToFile();
+			studentcount = studentcount + 1;
+		}
+		else {
+			cout << "No Further Registration are being accepted at this time" << endl;
+		}
+	}
+	else {
+		cout << "this id is already exist" << endl;
+	}
+}
+void saveAllStudentsToFile() {
+	ofstream outFile("students.txt");
+	if (outFile.is_open()) {
+		for (int i = 0;i < studentcount;i++) {
+			outFile << students[i].StudentID << " " << students[i].Name << " " << students[i].Password << " " << students[i].Level << endl;
+		}
+		outFile.close();
+	}
+}
+void loadStudentsFromFile() {
+	ifstream inFile("students.txt");
+	if (inFile.is_open()) {
+		int i = 0;
+		while (inFile >> students[i].StudentID >> students[i].Name >> students[i].Password >> students[i].Level) {
+			i++;
+		}
+		studentcount = i;
+		inFile.close();
+	}
+}
+int studentLogin() {
+	int id;
+	char pass[25];
+	cout << "please enter your id: "; cin >> id;
+	cout << "please enter your password: ";
+
+	int i = 0;
+	char ch;
+	while (true) {
+		ch = _getch();
+		if (ch == '\r') break;
+
+		if (i < 24) {
+			pass[i++] = ch;
+			cout << '*';
+		}
+	}
+	pass[i] = '\0';
+	for (int j = 0; j < 50; j++)
+	{
+		if (students[j].StudentID == id && students[j].Password == (string)pass)
+		{
+			return j;
+		}
+	}
+	return -1;
+}
+int adminLogin() {
+	    int AddId;
+    string Name;
+    char AddPass[20];
+    cout << "Enter your name:";
+    cin >>Name;
+    cout << endl;
+    cout << "Enter ID:";
+    cin >> AddId;
+    cout << endl;
+    cout << "Enter your password:";
+    int i = 0;
+    AddPass[i] = _getch();
+    while (AddPass[i] != '\r') {
+        cout << '*';
+        i++;
+        AddPass[i] = _getch();
+    }
+    AddPass[i] = '\0';
+    cout << endl;
+
+	for (int j = 0; j < 3; j++) {
+		bool same = true;
+		for (int k = 0; admins[j].Name[k] != '\0' || Name[k] != '\0'; k++) {
+			if (admins[j].Name[k] != Name[k]) {
+				same = false;
+				break;
+			}
+		}
+		if (!same) continue;
+		if (admins[j].AdminId != AddId) continue;
+		same = true;
+		for (int k = 0; admins[j].AdminPassword[k] != '\0' || AddPass[k] != '\0'; k++) {
+			if (admins[j].AdminPassword[k] != AddPass[k]) {
+				same = false;
+				break;
+			}
+		}
+		if (same) {
+			adminDashboard();
+			return true;
+		}
+	}
+
+	cout << "Invalid credentials. Access denied.\n";
+	return false;
+}
+
+
+// =======================================================
+//                        TEAM B
+// =======================================================
+
+void loadCourses() {
+	ifstream file("courses.txt");
+	if (!file) return;
+	file >> courseCount;
+	file.ignore();
+	for (int i = 0; i < courseCount; i++) {
+		file >> courses[i].CourseID;
+		file.ignore();
+		getline(file, courses[i].CourseName);
+		getline(file, courses[i].InstructorName);
+		file >> courses[i].CreditHours
+		     >> courses[i].MaxCapacity
+		     >> courses[i].CurrentEnrolled;
+		file.ignore();
+		getline(file, courses[i].Day);
+		getline(file, courses[i].Time);
+	}
+	file.close();
+}
+
+void saveCourses() {
+	ofstream file("courses.txt");
+	file << courseCount << "\n";
+	for (int i = 0; i < courseCount; i++) {
+		file << courses[i].CourseID        << "\n"
+		     << courses[i].CourseName      << "\n"
+		     << courses[i].InstructorName  << "\n"
+		     << courses[i].CreditHours     << "\n"
+		     << courses[i].MaxCapacity     << "\n"
+		     << courses[i].CurrentEnrolled << "\n"
+		     << courses[i].Day             << "\n"
+		     << courses[i].Time            << "\n";
+	}
+	file.close();
+}
+
+int searchCourse(int courseID) {
+	for (int i = 0; i < courseCount; i++) {
+		if (courses[i].CourseID == courseID)
+			return i;
+	}
+	return -1;
+}
+
+bool addCourse() {
+	if (courseCount >= 20) {
+		cout << "Sorry! Max limit reached, cannot add more courses.\n";
+		return false;
+	}
+	Course newCourse;
+	cout << "--- Add New Course ---\n";
+	cout << "Enter Course ID: ";
+	cin >> newCourse.CourseID;
+
+	for (int i = 0; i < courseCount; i++) {
+		if (courses[i].CourseID == newCourse.CourseID) {
+			cout << "Course ID already exists!\n";
+			return false;
+		}
+	}
+
+	cin.ignore();
+	cout << "Enter Course Name: ";      getline(cin, newCourse.CourseName);
+	cout << "Enter Instructor Name: ";  getline(cin, newCourse.InstructorName);
+	cout << "Enter Credit Hours: ";     cin >> newCourse.CreditHours;
+	cout << "Enter Max Capacity: ";     cin >> newCourse.MaxCapacity;
+	newCourse.CurrentEnrolled = 0;
+	cin.ignore();
+	cout << "Enter Day: ";   getline(cin, newCourse.Day);
+	cout << "Enter Time: ";  getline(cin, newCourse.Time);
+
+	courses[courseCount++] = newCourse;
+	saveCourses();
+	cout << "Course added successfully.\n";
+	return true;
+}
+
+void editCourse() {
+	int id;
+	cout << "Enter Course ID to edit: ";
+	cin >> id;
+	int index = searchCourse(id);
+	if (index == -1) { cout << "Course not found.\n"; return; }
+
+	cout << "Editing: " << courses[index].CourseName << "\n";
+	cout << "1. Course Name\n2. Instructor Name\n3. Credit Hours\n"
+	     << "4. Max Capacity\n5. Day\n6. Time\nChoice: ";
+	int choice; cin >> choice;
+	cin.ignore();
+
+	switch (choice) {
+		case 1: cout << "New name: ";         getline(cin, courses[index].CourseName);     break;
+		case 2: cout << "New instructor: ";   getline(cin, courses[index].InstructorName); break;
+		case 3: cout << "New credit hours: "; cin >> courses[index].CreditHours;           break;
+		case 4: cout << "New max capacity: "; cin >> courses[index].MaxCapacity;           break;
+		case 5: cout << "New day: ";          getline(cin, courses[index].Day);            break;
+		case 6: cout << "New time: ";         getline(cin, courses[index].Time);           break;
+		default: cout << "Invalid choice.\n"; return;
+	}
+	saveCourses();
+	cout << "Course updated successfully.\n";
+}
+
+void deleteCourse() {
+	int id;
+	cout << "Enter Course ID to delete: ";
+	cin >> id;
+	int index = searchCourse(id);
+	if (index == -1) { cout << "Course not found.\n"; return; }
+	if (courses[index].CurrentEnrolled > 0) {
+		cout << "Cannot delete: students are enrolled.\n";
+		return;
+	}
+	for (int i = index; i < courseCount - 1; i++)
+		courses[i] = courses[i + 1];
+	courseCount--;
+	saveCourses();
+	cout << "Course deleted successfully.\n";
+}
+
+void viewAllStudents() {
+	if (studentcount == 0) { cout << "No students available.\n"; return; }
+	cout<<"Name|ID|Number of registered courses\n";
+	cout<<"-------------------------------------\n";
+	for(int i=0;i<studentcount;i++)
+	{
+		cout<<students[i].Name<<"|"
+		<<students[i].StudentID<<"|"
+		<< students[i].NumberOfRegisteredCourses
+		<<endl;
+
+	}
+}
+
+void viewAllCourses() {
+	if (courseCount == 0) { cout << "No courses available.\n"; return; }
+	cout << "\n--- All Courses ---\n";
+	cout << string(100, '-') << "\n";
+	cout << left << setw(10) << "ID"
+	             << setw(25) << "Course Name"
+	             << setw(25) << "Instructor"
+	             << setw(8)  << "Credits"
+	             << setw(12) << "Day"
+	             << setw(10) << "Time"
+	             << "Available\n";
+	cout << string(100, '-') << "\n";
+	for (int i = 0; i < courseCount; i++) {
+		int available = courses[i].MaxCapacity - courses[i].CurrentEnrolled;
+		cout << left << setw(10) << courses[i].CourseID
+		             << setw(25) << courses[i].CourseName
+		             << setw(25) << courses[i].InstructorName
+		             << setw(8)  << courses[i].CreditHours
+		             << setw(12) << courses[i].Day
+		             << setw(10) << courses[i].Time
+		             << available << "\n";
+	}
+	cout << string(100, '-') << "\n";
+}
+
+void increaseStudentCount(int courseID) {
+	int index = searchCourse(courseID);
+	if (index == -1) { cout << "Course not found.\n"; return; }
+	if (courses[index].CurrentEnrolled >= courses[index].MaxCapacity) {
+		cout << "Course is full.\n"; return;
+	}
+	courses[index].CurrentEnrolled++;
+	cout << "student added successfully.\n";
+	saveCourses();
+}
+
+void decreaseStudentCount(int courseID) {
+	int index = searchCourse(courseID);
+	if (index == -1) { cout << "Course not found.\n"; return; }
+	if (courses[index].CurrentEnrolled == 0) {
+		cout << "No students to remove.\n"; return;
+	}
+	courses[index].CurrentEnrolled--;
+	cout << "Student removed successfully.\n";
+	saveCourses();
+}
+
+
+
+// =======================================================
+//             TEAM C  -- TODO: اكملوا هنا
+// =======================================================
+
+void viewAvailableCourses() {
+	// TODO: Team C
+}
+
+void registerCourse() {
+	// TODO: Team C
+}
+
+void dropCourse() {
+	// TODO: Team C
+}
+
+void viewMyCourses() {
+	// TODO: Team C
+}
+// =======================================================
+void adminDashboard() {
+	int choice;
+	do {
+		cout << "\n=== Admin Dashboard ===\n";
+		cout << "1. Add Course\n";
+		cout << "2. Edit Course\n";
+		cout << "3. Delete Course\n";
+		cout << "4. View All Courses\n";
+		cout << "5. View All Students\n";
+		cout << "6. Logout\n";
+		cout << "Choice: ";
+		cin >> choice;
+		switch (choice) {
+			case 1: addCourse();       break;
+			case 2: editCourse();      break;
+			case 3: deleteCourse();    break;
+			case 4: viewAllCourses();  break;
+			case 5: viewAllStudents(); break;
+			case 6: cout << "Logged out.\n"; break;
+			default: cout << "Invalid choice.\n";
+		}
+	} while (choice != 6);
+}
