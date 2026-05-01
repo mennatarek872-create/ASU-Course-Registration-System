@@ -615,36 +615,49 @@ void decreaseStudentCount(int courseID) {
 //                        TEAM C
 // =======================================================
 
-void viewAvailableCourses() {
-	if (courseCount == 0) { cout << "No courses available!!" << endl; return; }
+void viewAvailableCourses(){
+	if (courseCount == 0) {
+		cout << "No courses available!!" << endl;
+		return; 
+	}
+	bool found=false;
+	for(int i=0;i<courseCount;i++){
+		if(courses[i].CurrentEnrolled < courses[i].MaxCapacity){
+			found=true;
+			break;
+		}
+	}
+	if(!found){
+		cout << "Sorry, all courses are currently full!" << endl;
+		return;
+	}
 	cout << "\n# All Available Courses #\n" << endl;
 	cout << string(100, '-') << endl;
 	cout << left << setw(10) << "CourseID"
-		<< setw(25) << "CourseName"
-		<< setw(25) << "InstructorName"
-		<< setw(15) << "CreditHours"
-		<< setw(15) << "Time"
-		<< setw(10) << "Day"
-		<< setw(10) << "Available" << endl;
+		 << setw(25) << "CourseName"
+		 << setw(25) << "InstructorName"
+		 << setw(15) << "CreditHours"
+		 << setw(15) << "Time"
+		 << setw(10) << "Day"
+		 << setw(10) << "Available" << endl;
 	cout << string(100, '-') << endl;
-	bool found = false;
-	for (int i = 0; i < courseCount; i++) {
-		if (courses[i].CurrentEnrolled < courses[i].MaxCapacity) {
+
+
+	for(int i=0;i<courseCount;i++){
+		if(courses[i].CurrentEnrolled < courses[i].MaxCapacity){
 			int availablePlaces = courses[i].MaxCapacity - courses[i].CurrentEnrolled;
 			cout << left << setw(10) << courses[i].CourseID
-				<< setw(25) << courses[i].CourseName
-				<< setw(25) << courses[i].InstructorName
-				<< setw(15) << courses[i].CreditHours
-				<< setw(15) << courses[i].Time
-				<< setw(10) << courses[i].Day
-				<< setw(10) << availablePlaces << endl;
-			found = true;
+				 << setw(25) << courses[i].CourseName
+				 << setw(25) << courses[i].InstructorName
+				 << setw(15) << courses[i].CreditHours
+				 << setw(15) << courses[i].Time
+				 << setw(10) << courses[i].Day
+				 << setw(10) << availablePlaces << endl;
+		 
+		
 		}
-	}
-	cout << string(100, '-') << endl;
-	if (!found) cout << "Sorry, all courses are currently full!" << endl;
+	}	cout << string(100, '-') << endl;
 }
-
 void registerCourse(int index) {
 	if (students[index].NumberOfRegisteredCourses >= 10) {
 		cout << "You reached the limit of 10 courses." << endl; return;
@@ -652,6 +665,12 @@ void registerCourse(int index) {
 	int id;
 	cout << "Enter the Course ID you want to register: ";
 	cin >> id;
+	if (cin.fail()) {
+		cin.clear();
+		cin.ignore(1000, '\n');
+		cout << "Invalid input! Please enter a numeric Course ID.\n";
+		return;
+	}
 	int courseIndex = searchCourse(id);
 	if (courseIndex == -1) { cout << "Course not found." << endl; return; }
 	for (int i = 0; i < students[index].NumberOfRegisteredCourses; i++) {
